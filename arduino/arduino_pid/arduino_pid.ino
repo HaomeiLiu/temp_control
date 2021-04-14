@@ -47,26 +47,11 @@ void setup() {
 
 
 void loop() {
-  // First we read the real value of temperature
+  //Read temperature
   temperature_read = readHeaterTemp();
-  //error between the setpoint and the real value
-  PID_error = set_temperature - temperature_read;
-  //Calculate the P value
-  PID_p = kp * PID_error;
-  //Calculate the I value in a range on +-3
-  if(-3 < PID_error <3)
-  {
-    PID_i = PID_i + (ki * PID_error);
-  }
 
-  //For derivative we need real time to calculate speed change rate
-  timePrev = Time;                            // the previous time is stored before the actual time read
-  Time = millis();                            // actual time read
-  elapsedTime = (Time - timePrev) / 1000; 
-  //Now we can calculate the D calue
-  PID_d = kd*((PID_error - previous_error)/elapsedTime);
-  //Final total PID value is the sum of P + I + D
-  PID_value = PID_p + PID_i + PID_d;
+  //Calculate PID output
+  PID_value = PID_Calc(temperature_read);
 
   //We define PWM range between 0 and 255
   if(PID_value < 0)
@@ -81,8 +66,11 @@ void loop() {
 }
 
 
-
-double readHeaterTemp() {
+/******************
+ * func readHeaterTemp: read current temperature and process to the correct format
+ * output return_value: float, temperature in degree Celcius
+ ******************/
+float readHeaterTemp(){
 
   uint16_t v;
   pinMode(A0, INPUT);
@@ -93,3 +81,33 @@ double readHeaterTemp() {
 
   return v;
 }
+
+/******************
+ * func PID_Calc: calculate the PID output
+ * input current_heater_temp: float
+ * output return_value: float
+ ******************/
+float PID_Calc(float current_heater_temp){
+    float return_value;
+
+    PID_error = set_temperature - current_heater_temp;
+    previous_error = PID_error; //store for next loop
+
+    //proportional
+    PID_p = kp * PID_error;
+
+    //integral
+    //TODO: saturation limit
+    if(-3 < PID_error <3){
+        PID_i = PID_i + (ki * PID_error);
+    }
+
+    //derivative
+    timePrev = Time;
+    Time = millis();
+    elapsedTime = (Time - timePrev) / 1000; 
+    PID_d = kd*((PID_error - previous_error)/elapsedTime);
+
+    return_value = PID_p + PID_i + PID_d;
+    return return_value;
+} 
