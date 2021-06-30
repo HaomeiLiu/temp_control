@@ -1,9 +1,3 @@
-/*
- * This code references https://electronoobs.com/eng_arduino_tut24_2.php
- * with changes made to this specific application
- * */
-
- 
 /*    
  *    SCK             ==>     D9
  *    Vcc             ==>     Vcc (5v)
@@ -53,7 +47,7 @@ void loop() {
   //Calculate PID output
   PID_value = PID_Calc(temperature_read);
 
-  //We define PWM range between 0 and 255
+  //define PWM range between 0 and 255
   if(PID_value < 0)
   {    PID_value = 0;    }
   if(PID_value > 255)  
