@@ -60,7 +60,6 @@ void loop() {
   {    PID_value = 255;  }
   
   analogWrite(PWM_pin,255-PID_value);
-  previous_error = PID_error;     //Remember to store the previous error for next loop.
 
   delay(300);
 }
