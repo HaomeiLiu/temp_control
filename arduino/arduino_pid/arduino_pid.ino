@@ -3,9 +3,8 @@
  *    Vcc             ==>     Vcc (5v)
  *    Gnd             ==>     Gnd      */
 
-
-//Pins
-int PWM_pin = 3;
+#define PWMOut 3
+#define SCK 9
 
 //Variables - For Modification
 float set_temperature = 30;
@@ -24,12 +23,12 @@ int PID_p = 0;    int PID_i = 0;    int PID_d = 0;
 
 
 void setup() {
-  pinMode(PWM_pin,OUTPUT);
+  pinMode(PWMOut,OUTPUT);
   TCCR2B = TCCR2B & B11111000 | 0x03;    // pin 3 and 11 PWM frequency of 980.39 Hz - fast pwm
   Time = millis(); 
 
   // generate a 1mhz clock pulse on Timer1 pins
-  pinMode(9, OUTPUT);
+  pinMode(SCK, OUTPUT);
   TCCR1A = 0;
   TCCR1B = 0;
   TCNT1 = 0;
@@ -53,7 +52,7 @@ void loop() {
   if(PID_value > 255)  
   {    PID_value = 255;  }
   
-  analogWrite(PWM_pin,255-PID_value);
+  analogWrite(PWMOut,255-PID_value);
 
   delay(300);
 }

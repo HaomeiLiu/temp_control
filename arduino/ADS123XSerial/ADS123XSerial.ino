@@ -1,13 +1,13 @@
 #include "ADS123X.h"
 
-#define TEMP_A0     7
-#define TEMP_A1     A7
-#define TEMP_PDWN   8
-#define TEMP_SCLK   9
-#define TEMP_DOUT   10
-#define TEMP_SPEED  11
-#define TEMP_GAIN0  12
-#define TEMP_GAIN1  13
+#define TEMP_A0     2  //Digital Input, input MUX select
+#define TEMP_A1     12 //Digital Input, temperature sensor select
+#define TEMP_PDWN   3  //Digital Input, power down: hold low to power down and reset
+#define TEMP_SCLK   4  //Digital Input, serial clock
+#define TEMP_DOUT   5  //Digital Output, data ready (low) and data output
+#define TEMP_SPEED  6  //Digital Input, data rate select
+#define TEMP_GAIN0  7  //Digital Input, gain select
+#define TEMP_GAIN1  8  //Digital Input, gain select
 
 ADS123X temp;
 
